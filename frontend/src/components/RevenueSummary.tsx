@@ -3,7 +3,7 @@ import { SecureAPI } from '../lib/secureApi';
 
 interface RevenueData {
     property_id: string;
-    total_revenue: number;
+    total_revenue: string;
     currency: string;
     reservations_count: number;
 }
@@ -61,7 +61,7 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
     if (error) return <div className="p-4 text-red-500 bg-red-50 rounded-lg">{error}</div>;
     if (!data) return null;
 
-    const displayTotal = Math.round(data.total_revenue * 100) / 100;
+    const displayTotal = parseFloat(data.total_revenue); // Ensure two decimal places for display
 
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
@@ -102,7 +102,8 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
                     </div>
                 </div>
 
-                {/* Precision Warning Area */}
+                {/* Precision Warning Area — obsolete: the backend now rounds once and
+                    sends total_revenue as an exact string, so no float drift can occur.
                 <div className="mt-4 h-6">
                     {Math.abs(data.total_revenue - displayTotal) > 0.000001 && showRaw && (
                         <div className="flex items-center text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded">
@@ -113,6 +114,7 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
                         </div>
                     )}
                 </div>
+                */}
             </div>
         </div>
     );
